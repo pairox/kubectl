@@ -1,9 +1,13 @@
-name: Build and Push to GHCR
+name: Build and Push
 
 on:
   push:
     branches:
       - main
+
+permissions:
+  contents: read
+  packages: write
 
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/k8s
@@ -22,11 +26,11 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-     
-    - name: Build and Push kubectl-latest
+
+    - name: Build and Push k8s
       uses: docker/build-push-action@v5
       with:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ env.IMAGE_NAME }}:kubectl-latest  
+        tags: ${{ env.IMAGE_NAME }}:kubectl-latest
